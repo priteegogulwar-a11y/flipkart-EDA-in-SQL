@@ -1,0 +1,63 @@
+ -- Different price range segments for mobiles in India.
+CREATE DATABASE FLIPKARTS;
+USE FLIPKARTS;
+SELECT * FROM MOBILES;
+
+-- The brand that has the highest discounted price.
+ SELECT Brand,
+SUM(CASE WHEN MRP BETWEEN 0 AND 9999 THEN 1 ELSE 0 END) AS 'Price Below 10k',
+SUM(CASE WHEN MRP BETWEEN 10000 AND 19999 THEN 1 ELSE 0 END) AS 'Price Between 10k-20k',
+SUM(CASE WHEN MRP BETWEEN 20000 AND 39999 THEN 1 ELSE 0 END) AS 'Price Between 20k-40k',
+SUM(CASE WHEN MRP >=40000 THEN 1 ELSE 0 END) AS 'Price Above 40k'
+FROM MOBILES
+GROUP BY BRAND
+ORDER BY BRAND;
+
+-- Different price range segments for mobiles in India.
+SELECT BRAND,
+MAX(MRP - MSP) AS MAXDISCOUNT
+FROM MOBILES
+GROUP BY BRAND
+ORDER BY MAXDISCOUNT DESC
+LIMIT 1;
+
+-- Top 5 Brands as per average ratings.
+SELECT BRAND,AVG(RATINGS) AS AVG_RATING
+FROM  MOBILES
+GROUP BY BRAND
+ORDER BY AVG_RATING DESC
+LIMIT 5;
+ 
+ -- Top 5 Brands as per total number of reviews. 
+SELECT BRAND,SUM(NO_OF_REVIEWS) AS AVG_REVIEWS
+FROM MOBILES
+GROUP BY BRAND
+ORDER BY AVG_REVIEWS DESC
+LIMIT 5;
+ 
+  -- Mobiles with ratings more than 4.5.
+SELECT *
+FROM MOBILES
+WHERE RATINGS >4.5;
+
+-- Mobiles with discounts more than 40%
+SELECT * FROM MOBILES
+WHERE 
+DISCOUNT > 40;
+
+-- What is avg ratings and avg number of reviews per brand.
+SELECT BRAND,AVG(RATINGS) AS AVG_RATING,SUM(NO_OF_REVIEWS) AS AVG_REVIEWS
+FROM MOBILES
+GROUP BY BRAND
+ORDER BY AVG_REVIEWS DESC;
+
+-- Mobiles that has the highest discounts.
+SELECT *
+FROM MOBILES
+ORDER BY DISCOUNT DESC
+LIMIT 5;
+
+-- Mobiles that has the highest distinct brand.
+SELECT DISTINCT BRAND
+FROM MOBILES;
+
